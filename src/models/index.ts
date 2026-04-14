@@ -42,6 +42,11 @@ export interface RegisterDTO {
   password: string;
 }
 
+export interface LoginDTO {
+    email: string,
+    password: string
+}
+
 export interface FundWalletDTO {
   amount: number;
 }

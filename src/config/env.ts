@@ -5,7 +5,7 @@ dotenv.config();
 export const env = {
     port : process.env.PORT || 3000,
     nodeEnv : process.env.NODE_ENV || 'development',
-    jwtSecret : process.env.JWT_SECRET,
+    jwtSecret : require(process.env.JWT_SECRET || "JWT_SECRET"),
     db: {
     host: require('DB_HOST'),
     port: parseInt(process.env.DB_PORT || '3306', 10),
