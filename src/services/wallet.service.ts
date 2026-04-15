@@ -4,7 +4,7 @@ import { WalletRepository } from '../repositories/wallet.repository'
 import { TransactionRepository } from '../repositories/transaction.repository'
 import { UserRepository } from '../repositories/user.repository'
 import { TransferDTO, WithdrawDTO, FundWalletDTO } from '../models'
-import { get } from 'node:http'
+
 
 export class walletService {
     constructor(

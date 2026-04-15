@@ -38,8 +38,11 @@ export class UserService {
             await this.walletRepo.create({id : walletId, user_id : userId, balance : 0}, trx)
         });
 
-        const user = this.userRepo.findById(userId);
-        return user;
+        const user = await this.userRepo.findById(userId);
+        if (!user) throw new Error("No such user found");
+
+        const { password, ...safeUser } = user;
+        return safeUser;
     }
 
     async Login (dto: LoginDTO){
@@ -56,6 +59,7 @@ export class UserService {
         }
 
         const token = jwt.sign({ id: user.id, email: user.email }, env.jwtSecret, { expiresIn: '24h' });
-        return { token, user };
+        const { password, ...safeUser } = user;
+        return { token, safeUser };
     }
 }
