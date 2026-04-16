@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { sendError } from "../utils/response";
 
-export const authMiddleware = (res:Response, req: Request, next: NextFunction) =>{
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if(!authHeader?.startsWith("Bearer")){
         return sendError(res, "Unauthorized", 401);

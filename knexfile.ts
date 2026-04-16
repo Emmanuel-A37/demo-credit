@@ -12,7 +12,7 @@ const config: Record<string, Knex.Config> = {
       database: env.db.name,
     },
     migrations: {
-      directory: './migrations',
+      directory: './src/migrations',
       extension: 'ts',
     },
     seeds: {

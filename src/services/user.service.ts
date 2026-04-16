@@ -15,7 +15,7 @@ export class UserService {
         private karmaService : KarmaService
     ){}
 
-    async Register(dto : RegisterDTO){
+    async register(dto : RegisterDTO){
         const existing = await this.userRepo.findByEmail(dto.email);
 
         if (existing){
@@ -45,7 +45,7 @@ export class UserService {
         return safeUser;
     }
 
-    async Login (dto: LoginDTO){
+    async login (dto: LoginDTO){
         const user = await this.userRepo.findByEmail(dto.email);
 
         if (!user){
