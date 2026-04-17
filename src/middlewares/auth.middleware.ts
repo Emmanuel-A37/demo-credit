@@ -4,8 +4,10 @@ import { env } from "../config/env";
 import { sendError } from "../utils/response";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if(!authHeader?.startsWith("Bearer")){
+    const rawAuthHeader = req.headers.authorization || req.headers.Authorization;
+    const authHeader = Array.isArray(rawAuthHeader) ? rawAuthHeader[0] : rawAuthHeader;
+
+    if(!authHeader?.startsWith("Bearer ")){
         return sendError(res, "Unauthorized", 401);
     }
 

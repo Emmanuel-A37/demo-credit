@@ -25,7 +25,7 @@ export class walletService {
             throw new Error("Funding amount should be more than zero");
         };
 
-        db.transaction(async(trx) => {
+        const result = await db.transaction(async(trx) => {
             const wallet = await this.walletRepo.findByUserIdForUpdate(userId,trx);
             if (!wallet) throw new Error ("Wallet not found.");
 
@@ -43,7 +43,9 @@ export class walletService {
             }, trx);
 
             return { balance: newBalance, transaction };
-        })
+        });
+
+        return result;
     }
 
     async transfer(senderId: string, dto: TransferDTO){
@@ -56,7 +58,7 @@ export class walletService {
 
         if (recipient.id === senderId) throw new Error ("You can not transfer to yourself");
 
-        db.transaction(async(trx) => {
+        const result = await db.transaction(async(trx) => {
             const [senderWallet, recipientWallet] = await Promise.all([
                 this.walletRepo.findByUserIdForUpdate(senderId,trx),
                 this.walletRepo.findByUserIdForUpdate(recipient.id,trx)
@@ -100,7 +102,9 @@ export class walletService {
             ]);
 
             return {newBalance : senderBalance};
-        })
+        });
+
+        return result;
     }
 
     async withdraw(userId: string, dto: WithdrawDTO){
@@ -108,7 +112,7 @@ export class walletService {
             throw new Error("Funding amount should be more than zero");
         };
 
-        db.transaction( async(trx) => {
+        const result = await db.transaction( async(trx) => {
             const wallet = await this.walletRepo.findByUserIdForUpdate(userId, trx);
 
             if(!wallet) throw new Error("Wallet not found");
@@ -131,7 +135,9 @@ export class walletService {
             );
             
             return {balance: newBalance, transaction};
-        });        
+        });
+
+        return result;
     }
 
     async getTransactions(userId: string){

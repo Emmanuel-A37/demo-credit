@@ -33,7 +33,7 @@ export class UserService {
 
         const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-        db.transaction(async trx => {
+        await db.transaction(async trx => {
             await this.userRepo.create({id : userId, ...dto, password: hashedPassword})
             await this.walletRepo.create({id : walletId, user_id : userId, balance : 0}, trx)
         });
