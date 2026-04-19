@@ -14,6 +14,7 @@ export const env = {
     port : parseInt(process.env.PORT || '3000', 10),
     nodeEnv : process.env.NODE_ENV || 'development',
     jwtSecret : required('JWT_SECRET'),
+    adjutorKey : required('ADJUTOR_API_KEY'),
     db: {
     host: required('DB_HOST'),
     port: parseInt(process.env.DB_PORT || '3306', 10),
