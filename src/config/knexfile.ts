@@ -1,5 +1,9 @@
 import type { Knex } from 'knex';
-import { env } from './src/config/env';
+import path from 'path';
+import { env } from './env';
+
+const migrationsDir = path.resolve(__dirname, '../migrations');
+const seedsDir = path.resolve(__dirname, '../seeds');
 
 const config: Record<string, Knex.Config> = {
   development: {
@@ -12,11 +16,11 @@ const config: Record<string, Knex.Config> = {
       database: env.db.name,
     },
     migrations: {
-      directory: './src/migrations',
+      directory: migrationsDir,
       extension: 'ts',
     },
     seeds: {
-      directory: './seeds',
+      directory: seedsDir,
       extension: 'ts',
     },
   },
@@ -29,12 +33,12 @@ const config: Record<string, Knex.Config> = {
       password: env.db.password,
       database: `${env.db.name}_test`,
     },
-    migrations: { directory: './migrations', extension: 'ts' },
+    migrations: { directory: migrationsDir, extension: 'ts' },
   },
   production: {
     client: 'mysql2',
     connection: process.env.DATABASE_URL,
-    migrations: { directory: './migrations', extension: 'ts' },
+    migrations: { directory: migrationsDir, extension: 'ts' },
     pool: { min: 2, max: 10 },
   },
 };
