@@ -3,7 +3,7 @@ import { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('transactions', (table) => {
         table.uuid('id').primary();
-        table.string('reference', 100).notNullable().unique();
+        table.string('reference', 100).notNullable();
         table.uuid('wallet_id').notNullable().references('id').inTable('wallets');
         table.uuid('counterparty_wallet_id').nullable();
         table.enu('type', ['fund', 'transfer', 'withdraw']).notNullable();
