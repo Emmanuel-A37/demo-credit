@@ -1,6 +1,22 @@
 import type { Knex } from 'knex';
+import dotenv from 'dotenv';
 import path from 'path';
-import { env } from './env';
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+const requiredDbVar = (key: string): string => {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`Missing required env var: ${key}`);
+  }
+  return value;
+};
+
+const dbHost = requiredDbVar('DB_HOST');
+const dbPort = parseInt(process.env.DB_PORT || '3306', 10);
+const dbUser = requiredDbVar('DB_USER');
+const dbPassword = requiredDbVar('DB_PASSWORD');
+const dbName = requiredDbVar('DB_NAME');
 
 const migrationsDir = path.resolve(__dirname, '../migrations');
 const seedsDir = path.resolve(__dirname, '../seeds');
@@ -9,11 +25,11 @@ const config: Record<string, Knex.Config> = {
   development: {
     client: 'mysql2',
     connection: {
-      host: env.db.host,
-      port: env.db.port,
-      user: env.db.user,
-      password: env.db.password,
-      database: env.db.name,
+      host: dbHost,
+      port: dbPort,
+      user: dbUser,
+      password: dbPassword,
+      database: dbName,
     },
     migrations: {
       directory: migrationsDir,
@@ -27,11 +43,11 @@ const config: Record<string, Knex.Config> = {
   test: {
     client: 'mysql2',
     connection: {
-      host: env.db.host,
-      port: env.db.port,
-      user: env.db.user,
-      password: env.db.password,
-      database: `${env.db.name}_test`,
+      host: dbHost,
+      port: dbPort,
+      user: dbUser,
+      password: dbPassword,
+      database: `${dbName}_test`,
     },
     migrations: { directory: migrationsDir, extension: 'ts' },
   },
